@@ -27,10 +27,4 @@ jobs:
 
       - name: Update Glue Job Definition
         run: |
-          # Read the JSON file and optionally modify it
-          JOB_CONFIG=$(cat testVC/testVC.json)
-          
-          # Update the job using the JSON file
-          aws glue update-job \
-            --job-name "testVC" \
-            --job-update "$JOB_CONFIG"
+          aws glue update-job job-name="testVC" job-update="testVC/testVC.json"
