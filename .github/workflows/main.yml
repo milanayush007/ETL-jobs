@@ -20,7 +20,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_session_token: ${{ secrets.AWS_ACCESS_KEY_TOKEN }}
+          aws-session-token: ${{ secrets.AWS_ACCESS_KEY_TOKEN }}
           aws-region: us-east-1  # Change to your AWS region
 
       # Step 3: Update Glue Job from GitHub source control
