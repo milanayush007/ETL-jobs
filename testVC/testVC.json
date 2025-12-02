@@ -3,12 +3,12 @@
   "Description" : "",
   "Role" : "arn:aws:iam::998461587182:role/FullAccessGlueLambdaStatesRole",
   "ExecutionProperty" : {
-    "maxConcurrentRuns" : 1
+    "MaxConcurrentRuns" : 1
   },
   "Command" : {
-    "name" : "glueetl",
-    "scriptLocation" : "s3://qr-dev-etl-s3/test_folder_version_control/glue-jobs/scripts/testVC.py",
-    "pythonVersion" : "3"
+    "Name" : "glueetl",
+    "ScriptLocation" : "s3://qr-dev-etl-s3/test_folder_version_control/glue-jobs/scripts/testVC.py",
+    "PythonVersion" : "3"
   },
   "DefaultArguments" : {
     "--enable-metrics" : "true",
