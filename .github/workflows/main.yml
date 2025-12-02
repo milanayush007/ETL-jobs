@@ -34,6 +34,6 @@ jobs:
             --branch-name "main" \
             --folder "testVC/" \
             --auth-strategy "PERSONAL_ACCESS_TOKEN" \
-            --auth-token "${{ secrets.GITHUB_TOKEN }}" \
+            --auth-token "${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
             --region "us-east-1" \
             --no-cli-pager
