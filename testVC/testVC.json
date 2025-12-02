@@ -24,7 +24,7 @@
   "MaxRetries" : 0,
   "Timeout" : 480,
   "GlueVersion" : "5.0",
-  "NumberOfWorkers" : 10,
+  "NumberOfWorkers" : 2,
   "WorkerType" : "G.1X",
   "ExecutionClass" : "STANDARD"
 }
