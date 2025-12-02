@@ -27,7 +27,7 @@
   "timeout" : 480,
   "maxCapacity" : 2.0,
   "glueVersion" : "5.0",
-  "numberOfWorkers" : 2,
+  "numberOfWorkers" : 4,
   "workerType" : "G.1X",
   "executionClass" : "STANDARD",
   "sourceControlDetails" : {
