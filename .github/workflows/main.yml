@@ -1,0 +1,37 @@
+name: Update AWS Glue Job from GitHub
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+
+jobs:
+  update-glue-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository (optional, but useful)
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ secrets.AWS_ACCESS_KEY_TOKEN }}
+          aws-region: us-east-1  # Change to your AWS region
+
+      # Step 3: Update Glue Job from GitHub source control
+      - name: Update Glue Job
+        run: |
+          aws glue update-job-from-source-control \
+            --job-name "testVC" \
+            --provider "GITHUB" \
+            --repository-name "testVC" \
+            --repository-owner "milanayush007" \
+            --branch-name "main" \
+            --folder "testVC/" \
+            --auth-strategy "PERSONAL_ACCESS_TOKEN" \
+            --auth-token "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
