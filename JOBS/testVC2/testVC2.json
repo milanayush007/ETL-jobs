@@ -1,5 +1,4 @@
 {
-    "Name": "testVC2",
     "JobMode": "SCRIPT",
     "Description": "",
     "Role": "arn:aws:iam::998461587182:role/FullAccessGlueLambdaStatesRole",
