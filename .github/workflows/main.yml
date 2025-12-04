@@ -20,12 +20,26 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_ACCESS_KEY_TOKEN }}
           aws-region: us-east-1
-
-      - name: Upload Glue Script to S3
+      - name: Zip Libraries and Upload to S3
         run: |
-          aws s3 cp testVC/testVC.py s3://qr-dev-etl-s3/test_folder_version_control/glue-jobs/scripts/testVC.py
+          zip -r libraries.zip common_lib/
+          aws s3 cp libraries.zip s3://qr-dev-etl-s3/test_folder_version_control/libraries/libraries.zip
 
-      - name: Update Glue Job Definition
+      - name: Check Each Folder in JOBS Directory
         run: |
-          aws glue update-job --job-name testVC --job-update file://testVC/testVC.json
-          
+          for folder in $(ls JOBS); do
+            JOB_NAME="$folder"
+            LIBRARIES_PATH="s3://qr-dev-etl-s3/test_folder_version_control/libraries/libraries.zip"
+            if aws glue list-jobs --query "JobNames" --output text | grep -w "$JOB_NAME"; then
+              echo "Glue job '$JOB_NAME' exists. Proceeding with update..."
+              aws s3 cp JOBS/$JOB_NAME/$JOB_NAME.py s3://qr-dev-etl-s3/test_folder_version_control/glue-jobs/scripts/$JOB_NAME.py
+              aws glue update-job --job-name $JOB_NAME --job-update file://JOBS/$JOB_NAME/$JOB_NAME.json
+            else
+              echo "Glue job '$JOB_NAME' does not exist. Creating new Glue job..."
+              aws s3 cp JOBS/$JOB_NAME/$JOB_NAME.py s3://qr-dev-etl-s3/test_folder_version_control/glue-jobs/scripts/$JOB_NAME.py
+              jq --arg libPath "$LIBRARIES_PATH" '.DefaultArguments["--extra-py-files"] = $libPath' JOBS/$JOB_NAME/$JOB_NAME.json > JOBS/$JOB_NAME/$JOB_NAME_updated.json
+              mv JOBS/$JOB_NAME/$JOB_NAME_updated.json JOBS/$JOB_NAME/$JOB_NAME.json
+              aws glue create-job --name $JOB_NAME --cli-input-json file://JOBS/$JOB_NAME/$JOB_NAME.json
+            fi
+          done
+
